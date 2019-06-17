@@ -13,7 +13,7 @@
 - name: install package requirements
   package:
     name: "{{ elastic_repo_package_names | default(elastic_repo_package_name_default) }}"
-    state: "{{ elastic_repo_package_state }}"
+    state: present
 
 - name: install elastic apt repo key
   apt_key:
