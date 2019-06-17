@@ -6,6 +6,8 @@ driver:
 lint:
   name: yamllint
 platforms:
+  - name: stretch
+    image: debian:stretch
   - name: centos7
     image: centos:7
   - name: xenial
