@@ -19,11 +19,15 @@
   apt_key:
     url: "{{ elastic_repo_gpg_key }}"
     state: "{{ elastic_repo_state }}"
+  when:
+    - ansible_os_family == 'Debian'
 
 - name: install elastic yum repo key
   rpm_key:
     url: "{{ elastic_repo_gpg_key }}"
     state: "{{ elastic_repo_state }}"
+  when:
+    - ansible_os_family == 'RedHat'
 
 - name: install elastic apt repository (elastic license)
   apt_repository:
@@ -51,6 +55,9 @@
     enabled: yes
     gpgcheck: yes
     gpgkey: "{{ elastic_repo_gpg_key }}"
+  when:
+    - ansible_os_family == 'RedHat'
+    - not (elastic_repo_oss | bool)
 
 - name: install elastic yum repository (oss license)
   yum_repository:
@@ -60,3 +67,6 @@
     enabled: yes
     gpgcheck: yes
     gpgkey: "{{ elastic_repo_gpg_key }}"
+  when:
+    - ansible_os_family == 'RedHat'
+    - elastic_repo_oss | bool
