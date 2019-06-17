@@ -24,7 +24,7 @@
 
 - name: install elastic yum repo key
   rpm_key:
-    url: "{{ elastic_repo_gpg_key }}"
+    key: "{{ elastic_repo_gpg_key }}"
     state: "{{ elastic_repo_state }}"
   when:
     - ansible_os_family == 'RedHat'
