@@ -7,4 +7,4 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 
 def test_package_kibana(host):
-    assert host.package('kibana').is_installed
+    assert host.package('kibana-oss').is_installed
