@@ -6,3 +6,4 @@ Gemfile.lock
 **/.ropeproject
 playbook.retry
 Initial commit
+.python-version
