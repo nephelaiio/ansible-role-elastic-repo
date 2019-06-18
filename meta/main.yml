@@ -9,11 +9,9 @@ galaxy_info:
     - name: EL
       versions:
         - 7
-    - name: Archlinux
-      versions:
-        - all
     - name: Ubuntu
       versions:
+        - bionic
         - xenial
     - name: Debian
       versions:
