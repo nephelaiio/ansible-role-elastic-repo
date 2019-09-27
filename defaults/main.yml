@@ -5,4 +5,4 @@ elastic_repo_oss: yes
 
 elastic_repo_gpg_key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
-elasticsearch_repo_major_version: 6
+elasticsearch_repo_major_version: 7
