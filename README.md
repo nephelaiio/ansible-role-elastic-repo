@@ -1,7 +1,7 @@
 # nephelaiio.elastic-repo
 
-[![Build Status](https://travis-ci.org/nephelaiio/ansible-role-elastic-repo.svg?branch=master)](https://travis-ci.org/nephelaiio/ansible-role-elastic-repo)
-[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-nephelaiio.elastic_repo-blue.svg)](https://galaxy.ansible.com/nephelaiio/elastic_repo/)
+[![Build Status](https://github.com/nephelaiio/ansible-role-elastic-repo/workflows/.github/workflows/main.yml/badge.svg)](https://travis-ci.org/nephelaiio/ansible-role-elastic-repo)
+[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-nephelaiio.elastic-repo-blue.svg)](https://galaxy.ansible.com/nephelaiio/elastic-repo/)
 
 An [ansible role](https://galaxy.ansible.com/nephelaiio/elastic-repo) to install and configure Elasticsearch's repositories
 
