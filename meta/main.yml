@@ -11,12 +11,12 @@ galaxy_info:
         - 7
     - name: Ubuntu
       versions:
-        - 2004
-        - 1804
-        - 1604
+        - focal
+        - bionic
+        - xenial
     - name: Debian
       versions:
-        - 10
+        - stretch
   galaxy_tags:
     - elastic
     - repo
