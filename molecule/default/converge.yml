@@ -7,7 +7,7 @@
         update_cache: yes
       when: (ansible_os_family | lower) == 'debian'
   roles:
-    - role: elastic-repo
+    - role: nephelaiio.elastic_repo
   tasks:
     - name: install kibana
       package:
