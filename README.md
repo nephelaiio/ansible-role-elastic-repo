@@ -3,7 +3,7 @@
 [![Build Status](https://github.com/nephelaiio/ansible-role-elastic-repo/workflows/CI/badge.svg)](https://github.com/nephelaiio/ansible-role-elastic-repo/actions)
 [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-nephelaiio.elastic-repo-blue.svg)](https://galaxy.ansible.com/nephelaiio/elastic-repo/)
 
-An [ansible role](https://galaxy.ansible.com/nephelaiio/elastic-repo) to install and configure Elasticsearch's repositories
+An [ansible role](https://galaxy.ansible.com/nephelaiio/elastic_repo) to install and configure Elasticsearch's repositories
 
 ## Role Variables
 

@@ -1,7 +1,0 @@
----
-# - name: restart elastic-repo
-#   become: yes
-#   service:
-#     name: "{{ item }}"
-#     state: restarted
-#   with_items: "{{ elastic_repo_service_names }}"
