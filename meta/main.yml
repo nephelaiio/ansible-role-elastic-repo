@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   role_name: elastic_repo
-  author: Ted Cook
+  author: nephelaiio
   description: An Ansible role to install and configure elasticsearch repositories
   license: MIT
   min_ansible_version: 2.2
