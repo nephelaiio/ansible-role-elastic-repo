@@ -1,73 +1,71 @@
 ---
-- name: set variable overrides
-  set_fact:
-    _elastic_repo_packages: "{{ elastic_repo_packages | default(elastic_repo_packages_default | sorted_get(overrides)) }}"
-    _elastic_repo_url_els: "{{ elastic_repo_url | default(elastic_repo_url_default_els | sorted_get(overrides)) }}"
-    _elastic_repo_url_oss: "{{ elastic_repo_url | default(elastic_repo_url_default_oss | sorted_get(overrides)) }}"
-  vars:
-    overrides:
-      - "{{ ansible_distribution | lower }}-{{ ansible_distribution_release | lower }}"
-      - "{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}"
-      - "{{ ansible_distribution | lower }}"
-      - "{{ ansible_os_family | lower }}"
-      - "default"
-  tags:
-    - always
+- name: Set package facts
+  ansible.builtin.set_fact:
+    _elastic_repo_url_els: "{{ elastic_repo_url | default(elastic_repo_url_default_els) }}"
+    _elastic_repo_url_oss: "{{ elastic_repo_url | default(elastic_repo_url_default_oss) }}"
 
-- name: install package requirements
-  package:
-    name: "{{ _elastic_repo_packages | default(elastic_repo_package_name_default) }}"
-    state: present
-  when: _elastic_repo_packages != []
+- name: Install apt repository
+  when: ansible_os_family == "Debian"
+  block:
+    - name: Install package requirements
+      ansible.builtin.package:
+        name:
+          - gnupg
+          - apt-transport-https
+        state: present
 
-- block:
-
-    - name: install elastic apt repo key
-      apt_key:
+    - name: Install elastic apt repo key
+      ansible.builtin.apt_key:
         url: "{{ elastic_repo_gpg_key }}"
         state: "{{ elastic_repo_state }}"
 
-    - name: install elastic apt repository (elastic license)
-      apt_repository:
-        repo: "{{ _elastic_repo_url_els }}"
+    - name: Install elastic apt repository (elastic license)
+      ansible.builtin.apt_repository:
+        repo: "{{ _elastic_repo_url_els[_distro] }}"
         filename: elastic
         state: "{{ elastic_repo_state }}"
-      when: not (elastic_repo_oss | bool)
+      vars:
+        _distro: "{{ ansible_os_family | lower }}"
+      when: not elastic_repo_oss
 
-    - name: install elastic apt repository (oss license)
-      apt_repository:
-        repo: "{{ _elastic_repo_url_oss }}"
+    - name: Install elastic apt repository (oss license)
+      ansible.builtin.apt_repository:
+        repo: "{{ _elastic_repo_url_oss[_distro] }}"
         filename: elastic
         state: "{{ elastic_repo_state }}"
-      when: elastic_repo_oss | bool
+      vars:
+        _distro: "{{ ansible_os_family | lower }}"
+      when: elastic_repo_oss
 
-  when: (ansible_os_family | lower) == 'debian'
+- name: Install yum repository
+  when: ansible_os_family == 'RedHat'
+  block:
 
-- block:
-
-    - name: install elastic yum repo key
-      rpm_key:
+    - name: Install elastic yum repo key
+      ansible.builtin.rpm_key:
         key: "{{ elastic_repo_gpg_key }}"
         state: "{{ elastic_repo_state }}"
 
-    - name: install elastic yum repository (elastic license)
-      yum_repository:
+    - name: Install elastic yum repository (elastic license)
+      ansible.builtin.yum_repository:
         name: elastic
         description: "Elastic package repository"
-        baseurl: "{{ _elastic_repo_url_els }}"
-        enabled: yes
-        gpgcheck: yes
+        baseurl: "{{ _elastic_repo_url_els[_distro] }}"
+        enabled: true
+        gpgcheck: true
         gpgkey: "{{ elastic_repo_gpg_key }}"
+      vars:
+        _distro: "{{ ansible_os_family | lower }}"
       when: not (elastic_repo_oss | bool)
 
-    - name: install elastic yum repository (oss license)
-      yum_repository:
+    - name: Install elastic yum repository (oss license)
+      ansible.builtin.yum_repository:
         name: elastic
         description: "Elastic package repository"
-        baseurl: "{{ _elastic_repo_url_oss }}"
-        enabled: yes
-        gpgcheck: yes
+        baseurl: "{{ _elastic_repo_url_oss[_distro] }}"
+        enabled: true
+        gpgcheck: true
         gpgkey: "{{ elastic_repo_gpg_key }}"
+      vars:
+        _distro: "{{ ansible_os_family | lower }}"
       when: elastic_repo_oss | bool
-
-  when: (ansible_os_family | lower) == 'redhat'

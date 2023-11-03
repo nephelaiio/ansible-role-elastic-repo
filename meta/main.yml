@@ -4,22 +4,17 @@ galaxy_info:
   author: nephelaiio
   description: An Ansible role to install and configure elasticsearch repositories
   license: MIT
-  min_ansible_version: 2.2
+  min_ansible_version: '2.2'
   platforms:
     - name: EL
       versions:
-        - 7
+        - all
     - name: Ubuntu
       versions:
-        - focal
-        - bionic
-        - xenial
+        - all
     - name: Debian
       versions:
-        - stretch
-  galaxy_tags:
-    - elastic
-    - repo
+        - all
+  galaxy_tags: ['elastic', 'repo']
 
-dependencies:
-  - role: nephelaiio.plugins
+dependencies: []
