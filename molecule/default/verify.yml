@@ -1,0 +1,9 @@
+---
+- name: Verify
+  hosts: all
+  roles:
+    - role: nephelaiio.elastic_repo
+  tasks:
+    - name: Install kibana
+      ansible.builtin.package:
+        name: kibana-oss

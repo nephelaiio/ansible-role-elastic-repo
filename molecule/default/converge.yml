@@ -1,14 +1,5 @@
 ---
 - name: Converge
   hosts: all
-  pre_tasks:
-    - name: update apt package cache
-      ansible.builtin.apt:
-        update_cache: yes
-      when: ansible_os_family == "Debian"
   roles:
     - role: nephelaiio.elastic_repo
-  tasks:
-    - name: install kibana
-      ansible.builtin.package:
-        name: kibana-oss
