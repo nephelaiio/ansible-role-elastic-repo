@@ -21,26 +21,6 @@ lint: install
 	poetry run yamllint .
 	poetry run ansible-lint .
 
-roles:
-	[ -f ${REQUIREMENTS} ] && yq '.$@[] | .name' -r < ${REQUIREMENTS} \
-		| xargs -L1 poetry run ansible-galaxy role install --force || exit 0
-
-collections:
-	[ -f ${REQUIREMENTS} ] && yq '.$@[]' -r < ${REQUIREMENTS} \
-		| xargs -L1 echo poetry run ansible-galaxy -vvv collection install --force || exit 0
-
-requirements: roles collections
-
-roles:
-	[ -f ${REQUIREMENTS} ] && yq '.$@[] | .name' -r < ${REQUIREMENTS} \
-		| xargs -L1 poetry run ansible-galaxy role install --force || exit 0
-
-collections:
-	[ -f ${REQUIREMENTS} ] && yq '.$@[]' -r < ${REQUIREMENTS} \
-		| xargs -L1 echo poetry run ansible-galaxy -vvv collection install --force || exit 0
-
-requirements: roles collections
-
 dependency create prepare converge idempotence side-effect verify destroy login reset:
 	MOLECULE_DOCKER_IMAGE=${MOLECULE_DOCKER_IMAGE} poetry run molecule $@ -s ${MOLECULE_SCENARIO}
 

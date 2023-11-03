@@ -10,9 +10,9 @@
         state: present
 
     - name: Install elastic apt repo key
-        ansible.builtin.apt_key:
-          url: "{{ elastic_repo_gpg_key }}"
-          state: "{{ elastic_repo_state }}"
+      ansible.builtin.apt_key:
+        url: "{{ elastic_repo_gpg_key }}"
+        state: "{{ elastic_repo_state }}"
 
     - name: Install elastic apt repository (elastic license)
       ansible.builtin.apt_repository:
@@ -32,12 +32,12 @@
   when: (ansible_os_family | lower) == 'redhat'
   block:
 
-    - name: install elastic yum repo key
+    - name: Install elastic yum repo key
       ansible.builtin.rpm_key:
         key: "{{ elastic_repo_gpg_key }}"
         state: "{{ elastic_repo_state }}"
 
-    - name: install elastic yum repository (elastic license)
+    - name: Install elastic yum repository (elastic license)
       ansible.builtin.yum_repository:
         name: elastic
         description: "Elastic package repository"
@@ -47,7 +47,7 @@
         gpgkey: "{{ elastic_repo_gpg_key }}"
       when: not (elastic_repo_oss | bool)
 
-    - name: install elastic yum repository (oss license)
+    - name: Install elastic yum repository (oss license)
       ansible.builtin.yum_repository:
         name: elastic
         description: "Elastic package repository"
