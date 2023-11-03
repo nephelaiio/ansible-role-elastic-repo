@@ -28,7 +28,7 @@ provisioner:
     hosts:
       all:
         vars:
-          elasticsearch_repo_major_version: 7
+          elasticsearch_repo_major_version: 8
           elastic_repo_oss: false
           elastic_test_package: kibana
 verifier:
