@@ -1,4 +1,9 @@
 ---
+- name: Set package facts
+  ansible.builtin.set_fact:
+    _elastic_repo_url_els: "{{ elastic_repo_url | default(elastic_repo_url_default_els) }}"
+    _elastic_repo_url_oss: "{{ elastic_repo_url | default(elastic_repo_url_default_oss) }}"
+
 - name: Install apt repository
   when: ansible_os_family == "Debian"
   block:
@@ -16,20 +21,24 @@
 
     - name: Install elastic apt repository (elastic license)
       ansible.builtin.apt_repository:
-        repo: "{{ _elastic_repo_url_els }}"
+        repo: "{{ _elastic_repo_url_els[_distro] }}"
         filename: elastic
         state: "{{ elastic_repo_state }}"
-      when: not elastic_repo_oss | bool
+      vars:
+        _distro: "{{ ansible_os_family | lower }}"
+      when: not elastic_repo_oss
 
     - name: Install elastic apt repository (oss license)
       ansible.builtin.apt_repository:
-        repo: "{{ _elastic_repo_url_oss }}"
+        repo: "{{ _elastic_repo_url_oss[_distro] }}"
         filename: elastic
         state: "{{ elastic_repo_state }}"
-      when: elastic_repo_oss | bool
+      vars:
+        _distro: "{{ ansible_os_family | lower }}"
+      when: elastic_repo_oss
 
 - name: Install yum repository
-  when: (ansible_os_family | lower) == 'redhat'
+  when: ansible_os_family == 'RedHat'
   block:
 
     - name: Install elastic yum repo key
@@ -41,18 +50,22 @@
       ansible.builtin.yum_repository:
         name: elastic
         description: "Elastic package repository"
-        baseurl: "{{ _elastic_repo_url_els }}"
-        enabled: yes
-        gpgcheck: yes
+        baseurl: "{{ _elastic_repo_url_els[_distro] }}"
+        enabled: true
+        gpgcheck: true
         gpgkey: "{{ elastic_repo_gpg_key }}"
+      vars:
+        _distro: "{{ ansible_os_family | lower }}"
       when: not (elastic_repo_oss | bool)
 
     - name: Install elastic yum repository (oss license)
       ansible.builtin.yum_repository:
         name: elastic
         description: "Elastic package repository"
-        baseurl: "{{ _elastic_repo_url_oss }}"
-        enabled: yes
-        gpgcheck: yes
+        baseurl: "{{ _elastic_repo_url_oss[_distro] }}"
+        enabled: true
+        gpgcheck: true
         gpgkey: "{{ elastic_repo_gpg_key }}"
+      vars:
+        _distro: "{{ ansible_os_family | lower }}"
       when: elastic_repo_oss | bool

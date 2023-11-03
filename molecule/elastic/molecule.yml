@@ -28,6 +28,8 @@ provisioner:
     hosts:
       all:
         vars:
-          elastic_test_package: kibana-oss
+          elasticsearch_repo_major_version: 7
+          elastic_repo_oss: false
+          elastic_test_package: kibana
 verifier:
   name: ansible
