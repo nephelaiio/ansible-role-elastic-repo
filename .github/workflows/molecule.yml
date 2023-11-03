@@ -22,22 +22,22 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image:
-          - name: ubuntu2204
+        include:
+          - image: ubuntu2204
             scenario: elastic
             command: /lib/systemd/systemd
-          - name: ubuntu2004
+          - image: ubuntu2004
             scenario: default
             command: /lib/systemd/systemd
-          - name: debian12
+          - image: debian12
             scenario: elastic
             command: /lib/systemd/systemd
-          - name: debian12
+          - image: debian12
             scenario: elastic
-          - name: debian11
+          - image: debian11
             scenario: default
             command: /lib/systemd/systemd
-          - name: rockylinux9
+          - image: rockylinux9
             scenario: elastic
             command: /usr/lib/systemd/systemd
     steps:
@@ -68,6 +68,6 @@ jobs:
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
-          MOLECULE_DOCKER_IMAGE: ${{ matrix.image.name }}
-          MOLECULE_DOCKER_COMMAND: ${{ matrix.image.command }}
-          MOLECULE_SCENARIO: ${{ matrix.scenario.name }}
+          MOLECULE_DOCKER_IMAGE: ${{ matrix.image }}
+          MOLECULE_DOCKER_COMMAND: ${{ matrix.command }}
+          MOLECULE_SCENARIO: ${{ matrix.scenario }}
