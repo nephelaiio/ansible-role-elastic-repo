@@ -40,7 +40,6 @@
 - name: Install yum repository
   when: ansible_os_family == 'RedHat'
   block:
-
     - name: Install elastic yum repo key
       ansible.builtin.rpm_key:
         key: "{{ elastic_repo_gpg_key }}"
