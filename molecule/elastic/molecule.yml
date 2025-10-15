@@ -28,7 +28,7 @@ provisioner:
     hosts:
       all:
         vars:
-          elasticsearch_repo_major_version: "{{ lookup('env','MOLECULE_ELASTICSEARCH_MAJOR_VERSION') }}"
+          elastic_repo_major_version: "{{ lookup('env','MOLECULE_ELASTICSEARCH_MAJOR_VERSION') }}"
           elastic_repo_oss: false
           elastic_test_package: kibana
 verifier:
