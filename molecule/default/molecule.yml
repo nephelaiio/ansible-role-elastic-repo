@@ -30,6 +30,6 @@ provisioner:
         vars:
           elastic_repo_major_version: "{{ lookup('env','MOLECULE_ELASTICSEARCH_MAJOR_VERSION') }}"
           elastic_repo_oss: true
-          elastic_test_package: kibana
+          elastic_test_package: filebeat
 verifier:
   name: ansible
