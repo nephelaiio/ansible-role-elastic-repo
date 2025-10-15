@@ -1,11 +1,11 @@
 ---
+elastic_repo_major_version: 7
 elastic_repo_state: present
 elastic_repo_oss: true
 elastic_repo_gpg_key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-elasticsearch_repo_major_version: 7
 elastic_repo_url_default_els:
-  debian: "deb https://artifacts.elastic.co/packages/{{ elasticsearch_repo_major_version }}.x/apt stable main"
-  redhat: "https://artifacts.elastic.co/packages/{{ elasticsearch_repo_major_version }}.x/yum"
+  debian: "deb https://artifacts.elastic.co/packages/{{ elastic_repo_major_version }}.x/apt stable main"
+  redhat: "https://artifacts.elastic.co/packages/{{ elastic_repo_major_version }}.x/yum"
 elastic_repo_url_default_oss:
-  debian: "deb https://artifacts.elastic.co/packages/oss-{{ elasticsearch_repo_major_version }}.x/apt stable main"
-  redhat: "https://artifacts.elastic.co/packages/oss-{{ elasticsearch_repo_major_version }}.x/yum"
+  debian: "deb https://artifacts.elastic.co/packages/oss-{{ elastic_repo_major_version }}.x/apt stable main"
+  redhat: "https://artifacts.elastic.co/packages/oss-{{ elastic_repo_major_version }}.x/yum"
