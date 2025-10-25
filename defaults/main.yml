@@ -1,5 +1,5 @@
 ---
-elastic_repo_major_version: 7
+elastic_repo_major_version: 9
 elastic_repo_state: present
 elastic_repo_oss: true
 elastic_repo_gpg_key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
