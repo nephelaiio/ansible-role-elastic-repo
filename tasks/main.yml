@@ -18,6 +18,7 @@
       ansible.builtin.command: "which apt-key"
       register: apt_key_result
       changed_when: false
+      ignore_errors: true
 
     - name: Deploy legacy apt repository configuration
       when: apt_key_result is succeeded
