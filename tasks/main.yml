@@ -14,28 +14,49 @@
           - apt-transport-https
         state: present
 
-    - name: Install elastic apt repo key
-      ansible.builtin.apt_key:
-        url: "{{ elastic_repo_gpg_key }}"
-        state: "{{ elastic_repo_state }}"
+    - name: Query apt-key executable
+      ansible.builtin.command: "which apt-key"
+      register: apt_key_result
+      changed_when: false
 
-    - name: Install elastic apt repository (elastic license)
-      ansible.builtin.apt_repository:
-        repo: "{{ _elastic_repo_url_els[_distro] }}"
-        filename: elastic
-        state: "{{ elastic_repo_state }}"
-      vars:
-        _distro: "{{ ansible_os_family | lower }}"
-      when: not elastic_repo_oss
+    - name: Deploy legacy apt repository configuration
+      when: apt_key_result is succeeded
+      block:
+        - name: Install elastic apt repo key
+          ansible.builtin.apt_key:
+            url: "{{ elastic_repo_gpg_key }}"
+            state: "{{ elastic_repo_state }}"
 
-    - name: Install elastic apt repository (oss license)
-      ansible.builtin.apt_repository:
-        repo: "{{ _elastic_repo_url_oss[_distro] }}"
-        filename: elastic
-        state: "{{ elastic_repo_state }}"
-      vars:
-        _distro: "{{ ansible_os_family | lower }}"
-      when: elastic_repo_oss
+        - name: Install elastic apt repository (elastic license)
+          ansible.builtin.apt_repository:
+            repo: "{{ _elastic_repo_url_els[_distro] }}"
+            filename: elastic
+            state: "{{ elastic_repo_state }}"
+          vars:
+            _distro: "{{ ansible_os_family | lower }}"
+          when: not elastic_repo_oss
+
+        - name: Install elastic apt repository (oss license)
+          ansible.builtin.apt_repository:
+            repo: "{{ _elastic_repo_url_oss[_distro] }}"
+            filename: elastic
+            state: "{{ elastic_repo_state }}"
+          vars:
+            _distro: "{{ ansible_os_family | lower }}"
+          when: elastic_repo_oss
+
+    - name: Deploy deb882 repository configuration
+      when: apt_key_result is failed
+      block:
+        - name: Install elastic apt repo (elastic license)
+          ansible.builtin.deb822_repository:
+            name: elastic
+            types: [deb]
+            uris: "{{ _elastic_repo_url_els[_distro] | regex_replace('deb ', '') }}"
+            components: [binary]
+            signed_by: "{{ elastic_repo_gpg_key }}"
+            state: present
+            enabled: true
 
 - name: Install yum repository
   when: ansible_os_family == 'RedHat'
