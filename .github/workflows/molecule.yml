@@ -38,6 +38,7 @@ jobs:
         uses: pokerops/ansible-utils@master
         with:
           run: "make install requirements test"
+          cache: "false"
         env:
           PY_COLORS: "1"
           ANSIBLE_FORCE_COLOR: "1"
