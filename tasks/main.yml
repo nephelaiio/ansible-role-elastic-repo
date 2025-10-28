@@ -18,8 +18,8 @@
       ansible.builtin.set_fact:
         is_deb882: "{{ is_deb882_debian or is_deb882_ubuntu }}"
       vars:
-        is_deb882_debian: "{{ (ansible_facts.os_distribution == 'Debian') and (ansible_facts.os_distribution_version is version('11', '>=')) }}"
-        is_deb882_ubuntu: "{{ (ansible_facts.os_distribution == 'Ubuntu') and (ansible_facts.os_distribution_version is version('22.04', '>=')) }}"
+        is_deb882_debian: "{{ (ansible_facts.distribution == 'Debian') and (ansible_facts.distribution_version is version('11', '>=')) }}"
+        is_deb882_ubuntu: "{{ (ansible_facts.distribution == 'Ubuntu') and (ansible_facts.distribution_version is version('22.04', '>=')) }}"
 
     - name: Deploy legacy apt repository configuration
       when: not is_deb882
