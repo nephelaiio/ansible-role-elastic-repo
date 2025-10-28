@@ -64,6 +64,10 @@
             _distro: "{{ ansible_os_family | lower }}"
             _deb: "{{ _elastic_repo_url_els[_distro] | regex_replace('^deb ', '') | split }}"
 
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+
 - name: Install yum repository
   when: ansible_os_family == 'RedHat'
   block:
