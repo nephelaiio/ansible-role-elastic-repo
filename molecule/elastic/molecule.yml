@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: instance
-    image: "geerlingguy/docker-${MOLECULE_DOCKER_IMAGE:-ubuntu2004}-ansible:latest"
+    image: "geerlingguy/docker-${MOLECULE_DOCKER_IMAGE:-ubuntu2404}-ansible:latest"
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     cgroupns_mode: host
     privileged: true
@@ -28,7 +28,7 @@ provisioner:
     hosts:
       all:
         vars:
-          elastic_repo_major_version: "{{ lookup('env','MOLECULE_ELASTICSEARCH_MAJOR_VERSION') }}"
+          elastic_repo_major_version: "{{ lookup('env','MOLECULE_ELASTICSEARCH_MAJOR_VERSION', default=9) }}"
           elastic_repo_oss: false
           elastic_test_package: metricbeat
 verifier:

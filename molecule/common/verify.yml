@@ -2,6 +2,6 @@
 - name: Verify
   hosts: all
   tasks:
-    - name: Install kibana
+    - name: Install elastic package
       ansible.builtin.package:
         name: "{{ elastic_test_package }}"

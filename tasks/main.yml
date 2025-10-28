@@ -12,16 +12,18 @@
         name:
           - gnupg
           - apt-transport-https
+          - python3-debian
         state: present
 
-    - name: Query apt-key executable
-      ansible.builtin.command: "which apt-key"
-      register: apt_key_result
-      changed_when: false
-      ignore_errors: true
+    - name: Set apt repository state
+      ansible.builtin.set_fact:
+        is_deb882: "{{ is_deb882_debian or is_deb882_ubuntu }}"
+      vars:
+        is_deb882_debian: "{{ (ansible_facts.distribution == 'Debian') and (ansible_facts.distribution_version is version('11', '>=')) }}"
+        is_deb882_ubuntu: "{{ (ansible_facts.distribution == 'Ubuntu') and (ansible_facts.distribution_version is version('22.04', '>=')) }}"
 
     - name: Deploy legacy apt repository configuration
-      when: apt_key_result is succeeded
+      when: not is_deb882
       block:
         - name: Install elastic apt repo key
           ansible.builtin.apt_key:
@@ -47,17 +49,25 @@
           when: elastic_repo_oss
 
     - name: Deploy deb882 repository configuration
-      when: apt_key_result is failed
+      when: is_deb882
       block:
         - name: Install elastic apt repo (elastic license)
           ansible.builtin.deb822_repository:
             name: elastic
-            types: [deb]
-            uris: "{{ _elastic_repo_url_els[_distro] | regex_replace('deb ', '') }}"
-            components: [binary]
+            uris: "{{ _deb | first }}"
+            suites: "{{ _deb[-2] }}"
+            components: "{{ _deb[-1] }}"
             signed_by: "{{ elastic_repo_gpg_key }}"
             state: present
             enabled: true
+          vars:
+            _distro: "{{ ansible_os_family | lower }}"
+            _deb: "{{ _elastic_repo_url_els[_distro] | regex_replace('^deb ', '') | split }}"
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+      changed_when: false
 
 - name: Install yum repository
   when: ansible_os_family == 'RedHat'
