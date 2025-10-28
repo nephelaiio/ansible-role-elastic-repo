@@ -67,6 +67,7 @@
     - name: Update apt cache
       ansible.builtin.apt:
         update_cache: true
+      changed_when: false
 
 - name: Install yum repository
   when: ansible_os_family == 'RedHat'
