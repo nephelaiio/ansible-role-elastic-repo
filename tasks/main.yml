@@ -54,14 +54,15 @@
         - name: Install elastic apt repo (elastic license)
           ansible.builtin.deb822_repository:
             name: elastic
-            types: [deb]
-            uris: "{{ _elastic_repo_url_els[_distro] | regex_replace('deb ', '') }}"
-            components: [binary]
+            uris: "{{ _deb | first }}"
+            suites: "{{ _deb[-2] }}"
+            components: "{{ _deb[-1] }}"
             signed_by: "{{ elastic_repo_gpg_key }}"
             state: present
             enabled: true
           vars:
             _distro: "{{ ansible_os_family | lower }}"
+            _deb: "{{ _elastic_repo_url_els[_distro] | regex_replace('^deb ', '') | split }}"
 
 - name: Install yum repository
   when: ansible_os_family == 'RedHat'
